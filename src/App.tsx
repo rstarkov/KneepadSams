@@ -49,10 +49,30 @@ function App() {
             </div>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap", marginTop: "1rem" }}>
                 {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
+                {samsToShow.length > 0 && <div style={{ display: "grid", gridTemplateColumns: "max-content max-content max-content max-content max-content", gap: "0.1rem 0.6rem", alignItems: "center", alignSelf: "center", margin: "0 auto" }}>
+                    {Object.keys(rwrs).filter(rwr => possibleRwr.has(rwr)).map(rwr => {
+                        const samsWithThisRwr = samsToShow.filter(sk => sams[sk].units.some(u => u.rwr === rwr));
+                        const maxRange = Math.max(...samsWithThisRwr.map(sk => sams[sk].maxRangeNm));
+                        const maxAlt = Math.max(...samsWithThisRwr.map(sk => sams[sk].maxAltFt));
+                        return <>
+                            <RwrDiv key={rwr}>[{rwr}]</RwrDiv>
+                            <ParamsDiv>{maxRange > 99 ? 99 : maxRange.toFixed(0)}/{maxAlt > 99000 ? 99 : (maxAlt / 1000).toFixed(0)}</ParamsDiv>
+                            <UnitName>{rwrs[rwr].name}</UnitName>
+                            <div>{shortType(rwrs[rwr].type)}</div>
+                            <HarmDiv>[{rwrs[rwr].harm}]</HarmDiv>
+                        </>;
+                    })}
+                </div>}
                 {samsToShow.length > 0 && <LegendCard />}
             </div>
         </div>
     )
+}
+
+function shortType(type: string | undefined): string {
+    if (type == "Search radar") return "SR";
+    if (type == "Track radar") return "TR";
+    return "?";
 }
 
 const SelectDiv = styled("div") <{ selected: "yes" | "implicit" | "no" }>`
@@ -70,6 +90,7 @@ function LegendCard(): React.ReactNode {
     return <LegendDiv>
         <RwrDiv>[CS] <span style={{ fontWeight: "normal" }}>RWR code</span></RwrDiv>
         <HarmDiv>[103] <span style={{ fontWeight: "normal" }}>HARM code</span></HarmDiv>
+        <ParamsDiv><b>7/26</b> Max range / altitude</ParamsDiv>
         <div>Priority unit listed first</div>
     </LegendDiv>;
 }
@@ -178,6 +199,10 @@ const AlertDiv = styled("div")`
 const UnitName = styled("div")`
     color: #9E9D9C;
     text-align: right;
+`;
+
+const ParamsDiv = styled("div")`
+    color: #318BB1;
 `;
 
 export default App
