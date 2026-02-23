@@ -48,7 +48,7 @@ export function App() {
                 <div>SAM:</div>
                 {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk) ? "yes" : samsToShow.includes(sk) ? "implicit" : "no"} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>
-            <div style={{ display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap", marginTop: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "row", gap: "1rem 2rem", flexWrap: "wrap", marginTop: "1rem" }}>
                 {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
                 {samsToShow.length > 0 && <SummaryCardDiv>
                     {Object.keys(rwrs).filter(rwr => possibleRwr.has(rwr)).map(rwr => {
@@ -120,7 +120,7 @@ const LegendDiv = styled("div")`
 
 function SamSystemCard(p: { sam: SamSystem }): React.ReactNode {
     const mainUnit = p.sam.units[0];
-    return <div style={{ display: "flex", flexDirection: "column", padding: "0 1rem" }}>
+    return <div style={{ display: "flex", flexDirection: "column" }}>
         <SamSystemTitle>{p.sam.name}</SamSystemTitle>
         <div style={{ display: "grid", gridTemplateColumns: "max-content max-content", gap: "1rem 0" }}>
             <div style={{ position: "relative" }}>

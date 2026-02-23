@@ -92,12 +92,11 @@ const ThemeToggleButton = styled("button")`
     position: fixed;
     top: 8px;
     right: 8px;
-    z-index: 1000;
     background: ${p => p.theme.palette.mode === 'light' ? '#f0f0f0' : '#333'};
     border: 1px solid ${p => p.theme.palette.mode === 'light' ? '#ccc' : '#555'};
     border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 1.2rem;
+    padding: 8px 8px;
+    font-size: 1rem;
     cursor: pointer;
     &:hover {
         background: ${p => p.theme.palette.mode === 'light' ? '#e0e0e0' : '#444'};
