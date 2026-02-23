@@ -49,20 +49,20 @@ function App() {
             </div>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap", marginTop: "1rem" }}>
                 {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
-                {samsToShow.length > 0 && <div style={{ display: "grid", gridTemplateColumns: "max-content max-content max-content max-content max-content", gap: "0.1rem 0.6rem", alignItems: "center", alignSelf: "center", margin: "0 auto" }}>
+                {samsToShow.length > 0 && <SummaryCardDiv>
                     {Object.keys(rwrs).filter(rwr => possibleRwr.has(rwr)).map(rwr => {
                         const samsWithThisRwr = samsToShow.filter(sk => sams[sk].units.some(u => u.rwr === rwr));
                         const maxRange = Math.max(...samsWithThisRwr.map(sk => sams[sk].maxRangeNm));
                         const maxAlt = Math.max(...samsWithThisRwr.map(sk => sams[sk].maxAltFt));
                         return <>
-                            <RwrDiv key={rwr}>[{rwr}]</RwrDiv>
+                            <RwrDiv style={{ textAlign: "center" }} key={rwr}>[{rwr}]</RwrDiv>
                             <ParamsDiv>{maxRange > 99 ? 99 : maxRange.toFixed(0)}/{maxAlt > 99000 ? 99 : (maxAlt / 1000).toFixed(0)}</ParamsDiv>
                             <UnitName>{rwrs[rwr].name}</UnitName>
-                            <div>{shortType(rwrs[rwr].type)}</div>
+                            <div style={{ textAlign: "center" }}>{shortType(rwrs[rwr].type)}</div>
                             <HarmDiv>[{rwrs[rwr].harm}]</HarmDiv>
                         </>;
                     })}
-                </div>}
+                </SummaryCardDiv>}
                 {samsToShow.length > 0 && <LegendCard />}
             </div>
         </div>
@@ -87,6 +87,16 @@ const SelectDiv = styled("div") <{ selected: "yes" | "implicit" | "no" }>`
     ${p => p.selected != "no" ? "outline: 1px solid #1A73E8;" : ""}
     ${p => p.selected === "yes" ? "background-color: #cee0fb;" : ""}
 `;
+
+const SummaryCardDiv = styled("div")`
+    display: grid;
+    grid-template-columns: max-content max-content max-content max-content max-content;
+    gap: 0.1rem 0.6rem;
+    align-items: center;
+    align-self: center;
+    margin: 0 auto;
+`;
+
 
 function LegendCard(): React.ReactNode {
     return <LegendDiv>
@@ -205,6 +215,7 @@ const UnitName = styled("div")`
 
 const ParamsDiv = styled("div")`
     color: #318BB1;
+    text-align: right;
 `;
 
 export default App
