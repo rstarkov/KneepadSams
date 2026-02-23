@@ -2,12 +2,16 @@ import { styled, useTheme } from '@mui/material';
 import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data';
 
-function parseHash(): { rwr: string[], sam: string[] } {
+function parseHash(): { rwr: string[], sam: string[], hideSams: boolean, hideSummary: boolean, hideLegend: boolean } {
     const hash = window.location.hash.slice(1); // remove #
     const params = new URLSearchParams(hash);
+    const hideList = params.get('hide')?.split(',').filter(Boolean) || [];
     return {
         rwr: params.get('rwr')?.split(',').filter(Boolean) || [],
-        sam: params.get('sam')?.split(',').filter(Boolean) || []
+        sam: params.get('sam')?.split(',').filter(Boolean) || [],
+        hideSams: hideList.includes('sams'),
+        hideSummary: hideList.includes('summary'),
+        hideLegend: hideList.includes('legend'),
     };
 }
 
@@ -16,14 +20,22 @@ export function App() {
     const initial = parseHash();
     const [includeRwr, setIncludeRwr] = React.useState<string[]>(initial.rwr);
     const [includeSam, setIncludeSam] = React.useState<string[]>(initial.sam);
+    const [hideSams, setHideSams] = React.useState<boolean>(initial.hideSams);
+    const [hideSummary, setHideSummary] = React.useState<boolean>(initial.hideSummary);
+    const [hideLegend, setHideLegend] = React.useState<boolean>(initial.hideLegend);
 
     // Sync to URL hash on every change
     React.useEffect(() => {
         const parts = [];
         if (includeRwr.length > 0) parts.push(`rwr=${includeRwr.join(',')}`);
         if (includeSam.length > 0) parts.push(`sam=${includeSam.join(',')}`);
+        const hideList = [];
+        if (hideSams) hideList.push('sams');
+        if (hideSummary) hideList.push('summary');
+        if (hideLegend) hideList.push('legend');
+        if (hideList.length > 0) parts.push(`hide=${hideList.join(',')}`);
         window.location.hash = parts.join('&');
-    }, [includeRwr, includeSam]);
+    }, [includeRwr, includeSam, hideSams, hideSummary, hideLegend]);
 
     function toggle(key: string, list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>) {
         if (list.includes(key)) {
@@ -40,17 +52,23 @@ export function App() {
 
     return <>
         <div style={{ padding: "1.5rem" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem", fontSize: "0.9rem" }}>
                 <div>RWR:</div>
                 {Object.keys(rwrs).map(rwr => <SelectDiv key={rwr} selected={includeRwr.includes(rwr) ? "yes" : possibleRwr.has(rwr) ? "implicit" : "no"} onClick={() => toggle(rwr, includeRwr, setIncludeRwr)}><RwrDiv>{rwr}</RwrDiv></SelectDiv>)}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem", fontSize: "0.9rem" }}>
                 <div>SAM:</div>
                 {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk) ? "yes" : samsToShow.includes(sk) ? "implicit" : "no"} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "3rem", fontSize: "0.9rem" }}>
+                <div>Show:</div>
+                <SelectDiv selected={!hideSams ? "yes" : "no"} onClick={() => setHideSams(!hideSams)}>SAMs</SelectDiv>
+                <SelectDiv selected={!hideSummary ? "yes" : "no"} onClick={() => setHideSummary(!hideSummary)}>Summary</SelectDiv>
+                <SelectDiv selected={!hideLegend ? "yes" : "no"} onClick={() => setHideLegend(!hideLegend)}>Legend</SelectDiv>
+            </div>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 2rem", flexWrap: "wrap", marginTop: "1rem" }}>
-                {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
-                {samsToShow.length > 0 && <SummaryCardDiv>
+                {!hideSams && samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
+                {!hideSummary && samsToShow.length > 0 && <SummaryCardDiv>
                     {Object.keys(rwrs).filter(rwr => possibleRwr.has(rwr)).map(rwr => {
                         const samsWithThisRwr = samsToShow.filter(sk => sams[sk].units.some(u => u.rwr === rwr));
                         const maxRange = Math.max(...samsWithThisRwr.map(sk => sams[sk].maxRangeNm));
@@ -64,7 +82,7 @@ export function App() {
                         </>;
                     })}
                 </SummaryCardDiv>}
-                {samsToShow.length > 0 && <LegendCard />}
+                {!hideLegend && samsToShow.length > 0 && <LegendCard />}
             </div>
         </div>
         {theme.palette.mode === 'dark' && <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0, background: "#A4C1AC", zIndex: 9999, pointerEvents: "none", mixBlendMode: "multiply" }} />}
