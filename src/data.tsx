@@ -70,9 +70,9 @@ export const sams: Record<any, SamSystem> = {
     "s75": {
         name: <>SA-2 <span>Guideline</span> – S-75</>,
         nameShort: "2: S-75",
-        minRangeNm: -1,
+        minRangeNm: 2,
         maxRangeNm: 28,
-        minAltFt: -1,
+        minAltFt: 300,
         maxAltFt: 82000,
         units: [{
             name: "Fan Song",
@@ -116,9 +116,9 @@ export const sams: Record<any, SamSystem> = {
     "s200": {
         name: <>SA-5 <span>Gammon</span> – S-200</>,
         nameShort: "5: S-200",
-        minRangeNm: -1,
+        minRangeNm: 3.8,
         maxRangeNm: 160,
-        minAltFt: -1,
+        minAltFt: 1000,
         maxAltFt: 115000,
         units: [{
             name: "Square Pair",
@@ -303,9 +303,9 @@ export const sams: Record<any, SamSystem> = {
     "pantsir": {
         name: <>SA-22 <span>Greyhound</span> – Pantsir</>,
         nameShort: "22: Pantsir",
-        minRangeNm: -1,
+        minRangeNm: 0.1,
         maxRangeNm: 11,
-        minAltFt: -1,
+        minAltFt: 0,
         maxAltFt: 33000,
         alertNoLaunchWarn: true,
         alertShootAtMsl: true,
