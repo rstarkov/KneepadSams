@@ -65,7 +65,7 @@ export const units = {
     },
 } satisfies Record<string, SamUnit>;
 
-export const sams = {
+export const sams: Record<any, SamSystem> = {
     "s75": {
         name: <>SA-2 <span>Guideline</span> – S-75</>,
         minRangeNm: -1,
@@ -120,7 +120,7 @@ export const sams = {
             images: [{ src: img_placeholder }],
         }, {
             name: "Tin Shield",
-            rwr: "???",
+            rwr: "TS",
             harm: "130",
             type: "Search radar",
             images: [{ src: img_placeholder }],
@@ -289,5 +289,16 @@ export const sams = {
         }],
     },
 } satisfies Record<string, SamSystem>;
+
+// Set usedIn for all sam-specific units
+for (const [samKey, sam] of Object.entries(sams)) {
+    for (const unit of sam.units) {
+        if (!unit.usedIn) unit.usedIn = [];
+        if (!unit.usedIn.includes(samKey)) unit.usedIn.push(samKey);
+    }
+}
+
+const allUnits = Object.values(sams).flatMap(s => s.units).concat(Object.values(units));
+export const rwrs = Object.fromEntries(allUnits.filter(u => !!u.rwr).map(u => [u.rwr!, u]));
 
 export type SamKey = keyof typeof sams;

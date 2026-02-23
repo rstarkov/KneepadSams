@@ -1,18 +1,50 @@
 import React from 'react';
-import { sams, type SamSystem, type SamUnitImage } from './data'
+import { rwrs, sams, type SamKey, type SamSystem, type SamUnitImage } from './data'
 import { styled } from '@mui/material'
 
 function App() {
+    const [includeSam, setIncludeSam] = React.useState<string[]>([]);
+    const [includeRwr, setIncludeRwr] = React.useState<string[]>([]);
+
+    function toggle(key: string, list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>) {
+        if (list.includes(key)) {
+            setList(list.filter(k => k !== key));
+        } else {
+            setList([...list, key]);
+        }
+    }
+
+    // Determine which SAMs to show based on selected SAMs and RWRs
+    const samsToShow = includeSam;
+
     return (
-        <div style={{ padding: "1.5rem", display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap" }}>
-            <SamSystemCard sam={sams.buk} />
-            <SamSystemCard sam={sams.tor} />
-            <SamSystemCard sam={sams.tunguska} />
-            <SamSystemCard sam={sams.s300} />
-            <LegendCard />
+        <div style={{ padding: "1.5rem" }}>
+            {includeRwr.length == 0 && <div style={{ display: "flex", gap: "1rem" }}>
+                <div>Select SAM:</div>
+                {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk)} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sk}</SelectDiv>)}
+            </div>}
+            {includeRwr.length == 0 && includeSam.length == 0 && <div style={{ paddingLeft: "1.5rem" }}>- or -</div>}
+            {includeSam.length == 0 && <div style={{ display: "flex", gap: "1rem" }}>
+                <div>Select RWR:</div>
+                {Object.keys(rwrs).map(rwr => <SelectDiv key={rwr} selected={includeRwr.includes(rwr)} onClick={() => toggle(rwr, includeRwr, setIncludeRwr)}><RwrDiv>{rwr}</RwrDiv></SelectDiv>)}
+            </div>}
+            <div style={{ display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap", marginTop: "1rem" }}>
+                {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
+                <LegendCard />
+            </div>
         </div>
     )
 }
+
+const SelectDiv = styled("div") <{ selected: boolean }>`
+    padding: 0 0.26rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    user-select: none;
+    ${p => p.selected ? "border-color: #1A73E8;" : ""}
+    ${p => p.selected ? "outline: 1px solid #1A73E8;" : ""}
+    ${p => p.selected ? "background-color: #E7F0FD;" : ""}
+`;
 
 function LegendCard(): React.ReactNode {
     return <LegendDiv>
@@ -41,8 +73,8 @@ function SamSystemCard(p: { sam: SamSystem }): React.ReactNode {
             </div>
             <div>
                 <TwoCol>
-                    <RwrDiv>[{mainUnit.rwr}]</RwrDiv>
-                    <HarmDiv>[{mainUnit.harm}]</HarmDiv>
+                    <RwrDiv>[{mainUnit.rwr || "n/a"}]</RwrDiv>
+                    <HarmDiv>[{mainUnit.harm || "n/a"}]</HarmDiv>
                 </TwoCol>
                 <TwoCol>
                     <div>{p.sam.minRangeNm} nm</div>
