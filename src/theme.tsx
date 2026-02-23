@@ -55,11 +55,11 @@ function getTheme(mode: PaletteMode) {
         palette: {
             mode,
             sam: {
-                rwr: '#990000',
-                harm: '#018D19',
-                magazine: '#9900FF',
-                alert: '#FF161D',
-                params: '#318BB1',
+                rwr: mode === 'light' ? '#990000' : '#c61919',
+                harm: mode === 'light' ? '#018D19' : '#0ace2b',
+                magazine: mode === 'light' ? '#9900FF' : '#bd5ffb',
+                alert: mode === 'light' ? '#FF161D' : '#de5054',
+                params: mode === 'light' ? '#318BB1' : '#26ace5',
             },
             selection: {
                 border: mode === 'light' ? '#ccc' : '#555',
