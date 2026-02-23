@@ -2,9 +2,27 @@ import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data'
 import { styled } from '@mui/material'
 
+function parseHash(): { rwr: string[], sam: string[] } {
+    const hash = window.location.hash.slice(1); // remove #
+    const params = new URLSearchParams(hash);
+    return {
+        rwr: params.get('rwr')?.split(',').filter(Boolean) || [],
+        sam: params.get('sam')?.split(',').filter(Boolean) || []
+    };
+}
+
 function App() {
-    const [includeRwr, setIncludeRwr] = React.useState<string[]>([]);
-    const [includeSam, setIncludeSam] = React.useState<string[]>([]);
+    const initial = parseHash();
+    const [includeRwr, setIncludeRwr] = React.useState<string[]>(initial.rwr);
+    const [includeSam, setIncludeSam] = React.useState<string[]>(initial.sam);
+
+    // Sync to URL hash on every change
+    React.useEffect(() => {
+        const parts = [];
+        if (includeRwr.length > 0) parts.push(`rwr=${includeRwr.join(',')}`);
+        if (includeSam.length > 0) parts.push(`sam=${includeSam.join(',')}`);
+        window.location.hash = parts.join('&');
+    }, [includeRwr, includeSam]);
 
     function toggle(key: string, list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>) {
         if (list.includes(key)) {
