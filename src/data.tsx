@@ -33,7 +33,7 @@ export interface SamSystem {
 }
 export interface SamUnit {
     name?: string;
-    type?: string;
+    type: string;
     rwr: string | null;
     harm: string | null;
     magazine?: string[];
@@ -152,7 +152,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "6",
             harm: "108",
-            type: "Track/search radar",
+            type: "Search/track radar",
             images: [{ src: img_kub_radar_side }],
         }, {
             rwr: null,
@@ -172,6 +172,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "8",
             harm: "117",
+            type: "TLAR",
             magazine: ["6x radar missiles"],
             images: [{ src: img_osa_side }, { src: img_osa_front, variant: "front" }],
         }],
@@ -237,6 +238,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "13",
             harm: "118",
+            type: "TLAR",
             magazine: ["4x infrared missiles"],
             images: [{ src: img_strela13_side }],
         },
@@ -252,6 +254,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "11",
             harm: "115",
+            type: "TLAR",
             magazine: ["4x radar missiles"],
             images: [{ src: img_buk_side }],
         }, {
@@ -274,6 +277,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "15",
             harm: "119",
+            type: "TLAR",
             magazine: ["7x radar missiles"],
             images: [{ src: img_tor_side }, { src: img_tor_radardown, variant: "radar down" }],
         },
@@ -290,6 +294,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "19",
             harm: "120",
+            type: "TLAR",
             magazine: ["8x optical missiles", "2x guns"],
             images: [{ src: img_tunguska_side }, { src: img_tunguska_radardown, variant: "radar down" }],
         },
@@ -307,6 +312,7 @@ export const sams: Record<any, SamSystem> = {
         units: [{
             rwr: "22",
             harm: "134",
+            type: "TLAR",
             magazine: ["12x optical missiles", "2x guns"],
             images: [{ src: img_placeholder }],
         }],

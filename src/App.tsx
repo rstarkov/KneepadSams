@@ -72,6 +72,8 @@ function App() {
 function shortType(type: string | undefined): string {
     if (type == "Search radar") return "SR";
     if (type == "Track radar") return "TR";
+    if (type == "Search/track radar") return "STR";
+    if (type == "TLAR") return "TLAR";
     return "?";
 }
 
@@ -128,7 +130,7 @@ function SamSystemCard(p: { sam: SamSystem }): React.ReactNode {
                 {mainUnit.magazine && mainUnit.magazine.map((m, i) => <MagazineDiv key={i}>{m}</MagazineDiv>)}
                 {p.sam.alertShootAtMsl && <AlertDiv>Shoots at missiles</AlertDiv>}
                 {p.sam.alertNoLaunchWarn && <AlertDiv>No launch warning</AlertDiv>}
-                {mainUnit.type && <div>{mainUnit.type}</div>}
+                {mainUnit.type && mainUnit.type != "TLAR" && <div>{mainUnit.type}</div>}
                 {mainUnit.name && <UnitName>{mainUnit.name}</UnitName>}
             </div>
 
