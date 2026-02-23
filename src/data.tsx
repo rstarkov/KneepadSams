@@ -78,7 +78,9 @@ export const sams: Record<any, SamSystem> = {
             harm: "126",
             type: "Track radar",
             images: [{ src: img_placeholder }],
-        }, {
+        },
+        units.flatface,
+        {
             rwr: null,
             harm: null,
             type: "Launcher",
@@ -98,7 +100,9 @@ export const sams: Record<any, SamSystem> = {
             harm: "123",
             type: "Track radar",
             images: [{ src: img_placeholder }],
-        }, {
+        },
+        units.flatface,
+        {
             rwr: null,
             harm: null,
             type: "Launcher",
@@ -124,7 +128,9 @@ export const sams: Record<any, SamSystem> = {
             harm: "130",
             type: "Search radar",
             images: [{ src: img_placeholder }],
-        }, {
+        },
+        units.flatface,
+        {
             rwr: null,
             harm: null,
             type: "Launcher",
@@ -190,7 +196,8 @@ export const sams: Record<any, SamSystem> = {
             harm: "118",
             magazine: ["4x infrared missiles"],
             images: [{ src: img_strela13_side }],
-        }],
+        },
+        units.dogear],
     },
     "s300": {
         name: <>SA-10 <span>Grumble</span> – S-300</>,
@@ -257,7 +264,8 @@ export const sams: Record<any, SamSystem> = {
             harm: "119",
             magazine: ["7x radar missiles"],
             images: [{ src: img_tor_side }, { src: img_tor_radardown, variant: "radar down" }],
-        }],
+        },
+        units.dogear],
     },
     "tunguska": {
         name: <>SA-19 <span>Grison</span> – Tunguska</>,
@@ -271,7 +279,8 @@ export const sams: Record<any, SamSystem> = {
             harm: "120",
             magazine: ["8x optical missiles", "2x guns"],
             images: [{ src: img_tunguska_side }, { src: img_tunguska_radardown, variant: "radar down" }],
-        }],
+        },
+        units.dogear],
     },
     "pantsir": {
         name: <>SA-22 <span>Greyhound</span> – Pantsir</>,
@@ -293,8 +302,13 @@ export const sams: Record<any, SamSystem> = {
 // Set usedIn for all sam-specific units
 for (const [samKey, sam] of Object.entries(sams)) {
     for (const unit of sam.units) {
-        if (!unit.usedIn) unit.usedIn = [];
-        if (!unit.usedIn.includes(samKey)) unit.usedIn.push(samKey);
+        if (unit.usedIn === undefined)
+            unit.usedIn = [samKey];
+        else
+        {
+            if (!unit.usedIn.includes(samKey))
+                throw new Error(`Unit ${unit.name} in SAM ${samKey} is missing ${samKey} in its usedIn array`);
+        }
     }
 }
 
