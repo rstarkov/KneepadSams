@@ -22,6 +22,7 @@ import img_tunguska_side from "./assets/img_tunguska_side.png"
 
 export interface SamSystem {
     name: React.ReactNode;
+    nameShort: string;
     minRangeNm: number;
     maxRangeNm: number;
     minAltFt: number;
@@ -68,6 +69,7 @@ export const units = {
 export const sams: Record<any, SamSystem> = {
     "s75": {
         name: <>SA-2 <span>Guideline</span> – S-75</>,
+        nameShort: "2: S-75",
         minRangeNm: -1,
         maxRangeNm: 28,
         minAltFt: -1,
@@ -90,6 +92,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "s125": {
         name: <>SA-3 <span>Goa</span> – S-125</>,
+        nameShort: "3: S-125",
         minRangeNm: 3.2,
         maxRangeNm: 13.5,
         minAltFt: 700,
@@ -112,6 +115,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "s200": {
         name: <>SA-5 <span>Gammon</span> – S-200</>,
+        nameShort: "5: S-200",
         minRangeNm: -1,
         maxRangeNm: 160,
         minAltFt: -1,
@@ -140,6 +144,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "kub": {
         name: <>SA-6 <span>Gainful</span> – Kub</>,
+        nameShort: "6: Kub",
         minRangeNm: 0.5,
         maxRangeNm: 19.2,
         minAltFt: 100,
@@ -159,6 +164,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "osa": {
         name: <>SA-8 <span>Gecko</span> – Osa</>,
+        nameShort: "8: Osa",
         minRangeNm: 0.8,
         maxRangeNm: 7.5,
         minAltFt: 50,
@@ -172,6 +178,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "strela1": {
         name: <>SA-9 <span>Gaskin</span> – Strela-1</>,
+        nameShort: "9: Strela",
         minRangeNm: 0.4,
         maxRangeNm: 2.5,
         minAltFt: 100,
@@ -186,6 +193,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "strela10": {
         name: <>SA-13 <span>Gopher</span> – Strela-10</>,
+        nameShort: "13: Strela",
         minRangeNm: 0.4,
         maxRangeNm: 4.3,
         minAltFt: 75,
@@ -201,6 +209,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "s300": {
         name: <>SA-10 <span>Grumble</span> – S-300</>,
+        nameShort: "10: S-300",
         minRangeNm: 3,
         maxRangeNm: 40,
         minAltFt: 50,
@@ -234,6 +243,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "buk": {
         name: <>SA-11 <span>Gadfly</span> – Buk</>,
+        nameShort: "11: Buk",
         minRangeNm: 1.8,
         maxRangeNm: 18.9,
         minAltFt: 50,
@@ -254,6 +264,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "tor": {
         name: <>SA-15 <span>Gauntlet</span> – Tor</>,
+        nameShort: "15: Tor",
         minRangeNm: 0.8,
         maxRangeNm: 6.5,
         minAltFt: 60,
@@ -269,6 +280,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "tunguska": {
         name: <>SA-19 <span>Grison</span> – Tunguska</>,
+        nameShort: "19: Tunguska",
         minRangeNm: 0,
         maxRangeNm: 4,
         minAltFt: 0,
@@ -284,6 +296,7 @@ export const sams: Record<any, SamSystem> = {
     },
     "pantsir": {
         name: <>SA-22 <span>Greyhound</span> – Pantsir</>,
+        nameShort: "22: Pantsir",
         minRangeNm: -1,
         maxRangeNm: 11,
         minAltFt: -1,
@@ -304,8 +317,7 @@ for (const [samKey, sam] of Object.entries(sams)) {
     for (const unit of sam.units) {
         if (unit.usedIn === undefined)
             unit.usedIn = [samKey];
-        else
-        {
+        else {
             if (!unit.usedIn.includes(samKey))
                 throw new Error(`Unit ${unit.name} in SAM ${samKey} is missing ${samKey} in its usedIn array`);
         }

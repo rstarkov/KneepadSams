@@ -19,12 +19,12 @@ function App() {
 
     return (
         <div style={{ padding: "1.5rem" }}>
-            {includeRwr.length == 0 && <div style={{ display: "flex", gap: "1rem" }}>
+            {includeRwr.length == 0 && <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                 <div>Select SAM:</div>
-                {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk)} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sk}</SelectDiv>)}
+                {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk)} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>}
             {includeRwr.length == 0 && includeSam.length == 0 && <div style={{ paddingLeft: "1.5rem" }}>- or -</div>}
-            {includeSam.length == 0 && <div style={{ display: "flex", gap: "1rem" }}>
+            {includeSam.length == 0 && <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                 <div>Select RWR:</div>
                 {Object.keys(rwrs).map(rwr => <SelectDiv key={rwr} selected={includeRwr.includes(rwr)} onClick={() => toggle(rwr, includeRwr, setIncludeRwr)}><RwrDiv>{rwr}</RwrDiv></SelectDiv>)}
             </div>}
@@ -41,6 +41,7 @@ const SelectDiv = styled("div") <{ selected: boolean }>`
     border: 1px solid #ccc;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
     ${p => p.selected ? "border-color: #1A73E8;" : ""}
     ${p => p.selected ? "outline: 1px solid #1A73E8;" : ""}
     ${p => p.selected ? "background-color: #E7F0FD;" : ""}
