@@ -55,17 +55,82 @@ export const units = {
         images: [{ src: img_dogear_side }],
         usedIn: ["strela10", "tor", "tunguska"],
     },
+    "flatface": {
+        name: "Flat Face",
+        rwr: "S",
+        harm: "122",
+        type: "Search radar",
+        images: [{ src: img_placeholder }],
+        usedIn: ["s75", "s125", "s200"],
+    },
 } satisfies Record<string, SamUnit>;
 
 export const sams = {
     "s75": {
         name: <>SA-2 <span>Guideline</span> – S-75</>,
+        minRangeNm: -1,
+        maxRangeNm: 28,
+        minAltFt: -1,
+        maxAltFt: 82000,
+        units: [{
+            name: "Fan Song",
+            rwr: "2",
+            harm: "126",
+            type: "Track radar",
+            images: [{ src: img_placeholder }],
+        }, {
+            rwr: null,
+            harm: null,
+            type: "Launcher",
+            magazine: ["1x radar missile"],
+            images: [{ src: img_placeholder }],
+        }],
     },
     "s125": {
         name: <>SA-3 <span>Goa</span> – S-125</>,
+        minRangeNm: 3.2,
+        maxRangeNm: 13.5,
+        minAltFt: 700,
+        maxAltFt: 66000,
+        units: [{
+            name: "Low Blow",
+            rwr: "3",
+            harm: "123",
+            type: "Track radar",
+            images: [{ src: img_placeholder }],
+        }, {
+            rwr: null,
+            harm: null,
+            type: "Launcher",
+            magazine: ["4x radar missiles"],
+            images: [{ src: img_placeholder }],
+        }],
     },
     "s200": {
         name: <>SA-5 <span>Gammon</span> – S-200</>,
+        minRangeNm: -1,
+        maxRangeNm: 160,
+        minAltFt: -1,
+        maxAltFt: 115000,
+        units: [{
+            name: "Square Pair",
+            rwr: "5",
+            harm: "129",
+            type: "Track radar",
+            images: [{ src: img_placeholder }],
+        }, {
+            name: "Tin Shield",
+            rwr: "???",
+            harm: "130",
+            type: "Search radar",
+            images: [{ src: img_placeholder }],
+        }, {
+            rwr: null,
+            harm: null,
+            type: "Launcher",
+            magazine: ["1x radar missile"],
+            images: [{ src: img_placeholder }],
+        }],
     },
     "kub": {
         name: <>SA-6 <span>Gainful</span> – Kub</>,
