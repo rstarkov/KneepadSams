@@ -88,10 +88,12 @@ function getTheme(mode: PaletteMode) {
     });
 }
 
-const ThemeToggleButton = styled("button")`
-    position: fixed;
+export const TopRightButton = styled("button")`
+    position: absolute;
     top: 8px;
     right: 8px;
+    width: 40px;
+    height: 40px;
     background: ${p => p.theme.palette.mode === 'light' ? '#f0f0f0' : '#333'};
     border: 1px solid ${p => p.theme.palette.mode === 'light' ? '#ccc' : '#555'};
     border-radius: 4px;
@@ -139,9 +141,9 @@ export function ThemeWrapper(p: { children?: React.ReactNode }) {
                     minHeight: '100vh',
                 },
             }} />
-            <ThemeToggleButton onClick={toggleTheme}>
+            <TopRightButton onClick={toggleTheme}>
                 {mode === 'light' ? '🌙' : '☀️'}
-            </ThemeToggleButton>
+            </TopRightButton>
             {p.children}
         </ThemeProvider>
     );

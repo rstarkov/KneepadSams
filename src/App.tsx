@@ -1,6 +1,7 @@
-import { styled, useTheme } from '@mui/material';
+import { Menu, MenuItem, styled, useTheme } from '@mui/material';
 import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data';
+import { TopRightButton } from './theme';
 
 function parseHash(): { rwr: string[], sam: string[], hideSams: boolean, hideSummary: boolean, hideLegend: boolean } {
     const hash = window.location.hash.slice(1); // remove #
@@ -23,6 +24,7 @@ export function App() {
     const [hideSams, setHideSams] = React.useState<boolean>(initial.hideSams);
     const [hideSummary, setHideSummary] = React.useState<boolean>(initial.hideSummary);
     const [hideLegend, setHideLegend] = React.useState<boolean>(initial.hideLegend);
+    const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
 
     // Sync to URL hash on every change
     React.useEffect(() => {
@@ -60,12 +62,22 @@ export function App() {
                 <div>SAM:</div>
                 {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk) ? "yes" : samsToShow.includes(sk) ? "implicit" : "no"} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "3rem", fontSize: "0.9rem" }}>
-                <div>Show:</div>
-                <SelectDiv selected={!hideSams ? "yes" : "no"} onClick={() => setHideSams(!hideSams)}>SAMs</SelectDiv>
-                <SelectDiv selected={!hideSummary ? "yes" : "no"} onClick={() => setHideSummary(!hideSummary)}>Summary</SelectDiv>
-                <SelectDiv selected={!hideLegend ? "yes" : "no"} onClick={() => setHideLegend(!hideLegend)}>Legend</SelectDiv>
-            </div>
+            <TopRightButton onClick={(e) => setMenuAnchor(e.currentTarget)} style={{ right: "56px" }}>▼</TopRightButton>
+            <Menu
+                anchorEl={menuAnchor}
+                open={Boolean(menuAnchor)}
+                onClose={() => setMenuAnchor(null)}
+            >
+                <MenuItem onClick={() => setHideSams(!hideSams)}>
+                    {!hideSams ? '✓ ' : '   '}Show SAMs
+                </MenuItem>
+                <MenuItem onClick={() => setHideSummary(!hideSummary)}>
+                    {!hideSummary ? '✓ ' : '   '}Show Summary
+                </MenuItem>
+                <MenuItem onClick={() => setHideLegend(!hideLegend)}>
+                    {!hideLegend ? '✓ ' : '   '}Show Legend
+                </MenuItem>
+            </Menu>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 2rem", flexWrap: "wrap", marginTop: "1rem" }}>
                 {!hideSams && samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
                 {!hideSummary && samsToShow.length > 0 && <SummaryCardDiv>
