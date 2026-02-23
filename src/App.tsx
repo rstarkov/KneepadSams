@@ -1,6 +1,81 @@
 import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data'
-import { styled } from '@mui/material'
+import { styled, createTheme, ThemeProvider } from '@mui/material'
+
+declare module '@mui/material/styles' {
+    interface Palette {
+        sam: {
+            rwr: string;
+            harm: string;
+            magazine: string;
+            alert: string;
+            params: string;
+        };
+        selection: {
+            border: string;
+            borderActive: string;
+            backgroundActive: string;
+        };
+        card: {
+            titleBackground: string;
+            titleBorder: string;
+            titleText: string;
+            legendBackground: string;
+        };
+        muted: {
+            text: string;
+        };
+    }
+    interface PaletteOptions {
+        sam?: {
+            rwr?: string;
+            harm?: string;
+            magazine?: string;
+            alert?: string;
+            params?: string;
+        };
+        selection?: {
+            border?: string;
+            borderActive?: string;
+            backgroundActive?: string;
+        };
+        card?: {
+            titleBackground?: string;
+            titleBorder?: string;
+            titleText?: string;
+            legendBackground?: string;
+        };
+        muted?: {
+            text?: string;
+        };
+    }
+}
+
+const theme = createTheme({
+    palette: {
+        sam: {
+            rwr: '#990000',
+            harm: '#018D19',
+            magazine: '#9900FF',
+            alert: '#FF161D',
+            params: '#318BB1',
+        },
+        selection: {
+            border: '#ccc',
+            borderActive: '#1A73E8',
+            backgroundActive: '#cee0fb',
+        },
+        card: {
+            titleBackground: '#E7F0FD',
+            titleBorder: '#1A73E8',
+            titleText: '#0B5394',
+            legendBackground: '#f0f0f0',
+        },
+        muted: {
+            text: '#9E9D9C',
+        },
+    },
+});
 
 function parseHash(): { rwr: string[], sam: string[] } {
     const hash = window.location.hash.slice(1); // remove #
@@ -79,13 +154,13 @@ function shortType(type: string | undefined): string {
 
 const SelectDiv = styled("div") <{ selected: "yes" | "implicit" | "no" }>`
     padding: 0 0.26rem;
-    border: 1px solid #ccc;
+    border: 1px solid ${p => p.theme.palette.selection.border};
     cursor: pointer;
     user-select: none;
     white-space: nowrap;
-    ${p => p.selected != "no" ? "border-color: #1A73E8;" : ""}
-    ${p => p.selected != "no" ? "outline: 1px solid #1A73E8;" : ""}
-    ${p => p.selected === "yes" ? "background-color: #cee0fb;" : ""}
+    ${p => p.selected != "no" ? `border-color: ${p.theme.palette.selection.borderActive};` : ""}
+    ${p => p.selected != "no" ? `outline: 1px solid ${p.theme.palette.selection.borderActive};` : ""}
+    ${p => p.selected === "yes" ? `background-color: ${p.theme.palette.selection.backgroundActive};` : ""}
 `;
 
 const SummaryCardDiv = styled("div")`
@@ -109,11 +184,11 @@ function LegendCard(): React.ReactNode {
 const LegendDiv = styled("div")`
     display: flex;
     flex-direction: column;
-    border: 2px solid #1A73E8;
+    border: 2px solid ${p => p.theme.palette.card.titleBorder};
     align-self: center;
     margin: 0 auto;
     padding: 0.7rem 1rem;
-    background: #f0f0f0;
+    background: ${p => p.theme.palette.card.legendBackground};
 `;
 
 function SamSystemCard(p: { sam: SamSystem }): React.ReactNode {
@@ -170,16 +245,16 @@ function UnitImage({ img }: { img: SamUnitImage }): React.ReactNode {
 }
 
 const SamSystemTitle = styled("h2")`
-    background-color: #E7F0FD;
-    border-top: 2px solid #1A73E8;
-    border-bottom: 2px solid #1A73E8;
-    color: #0B5394;
+    background-color: ${p => p.theme.palette.card.titleBackground};
+    border-top: 2px solid ${p => p.theme.palette.card.titleBorder};
+    border-bottom: 2px solid ${p => p.theme.palette.card.titleBorder};
+    color: ${p => p.theme.palette.card.titleText};
     font-size: 1.1rem;
     padding: 0;
     margin: 0;
     text-align: center;
     & > span {
-        color: #9E9D9C;
+        color: ${p => p.theme.palette.muted.text};
     }
 `;
 
@@ -192,30 +267,36 @@ const TwoCol = styled("div")`
 
 const RwrDiv = styled("div")`
     font-weight: bold;
-    color: #990000;
+    color: ${p => p.theme.palette.sam.rwr};
 `;
 
 const HarmDiv = styled("div")`
     font-weight: bold;
-    color: #018D19;
+    color: ${p => p.theme.palette.sam.harm};
 `;
 
 const MagazineDiv = styled("div")`
-    color: #9900FF;
+    color: ${p => p.theme.palette.sam.magazine};
 `;
 
 const AlertDiv = styled("div")`
-    color: #FF161D;
+    color: ${p => p.theme.palette.sam.alert};
 `;
 
 const UnitName = styled("div")`
-    color: #9E9D9C;
+    color: ${p => p.theme.palette.muted.text};
     text-align: right;
 `;
 
 const ParamsDiv = styled("div")`
-    color: #318BB1;
+    color: ${p => p.theme.palette.sam.params};
     text-align: right;
 `;
 
-export default App
+export default function AppWithTheme() {
+    return (
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
+    );
+}
