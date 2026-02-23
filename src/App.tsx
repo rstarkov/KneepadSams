@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { styled, useTheme } from '@mui/material';
 import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data';
 
@@ -12,6 +12,7 @@ function parseHash(): { rwr: string[], sam: string[] } {
 }
 
 export function App() {
+    const theme = useTheme();
     const initial = parseHash();
     const [includeRwr, setIncludeRwr] = React.useState<string[]>(initial.rwr);
     const [includeSam, setIncludeSam] = React.useState<string[]>(initial.sam);
@@ -37,7 +38,7 @@ export function App() {
     const possibleRwr = new Set<string>();
     samsToShow.forEach(sk => sams[sk].units.forEach(u => u.rwr && possibleRwr.add(u.rwr)));
 
-    return (
+    return <>
         <div style={{ padding: "1.5rem" }}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
                 <div>RWR:</div>
@@ -66,7 +67,8 @@ export function App() {
                 {samsToShow.length > 0 && <LegendCard />}
             </div>
         </div>
-    )
+        {theme.palette.mode === 'dark' && <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0, background: "#A4C1AC", zIndex: 9999, pointerEvents: "none", mixBlendMode: "multiply" }} />}
+    </>;
 }
 
 function shortType(type: string | undefined): string {

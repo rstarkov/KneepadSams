@@ -54,12 +54,18 @@ function getTheme(mode: PaletteMode) {
     return createTheme({
         palette: {
             mode,
+            text: {
+                primary: mode === 'light' ? '#000000' : '#ffffff',
+            },
+            background: {
+                default: mode === 'light' ? '#ffffff' : '#000000',
+            },
             sam: {
-                rwr: mode === 'light' ? '#990000' : '#c61919',
-                harm: mode === 'light' ? '#018D19' : '#0ace2b',
-                magazine: mode === 'light' ? '#9900FF' : '#bd5ffb',
-                alert: mode === 'light' ? '#FF161D' : '#de5054',
-                params: mode === 'light' ? '#318BB1' : '#26ace5',
+                rwr: mode === 'light' ? '#990000' : '#FF5F59',
+                harm: mode === 'light' ? '#018D19' : '#2CAA01',
+                magazine: mode === 'light' ? '#9900FF' : '#8A4293',
+                alert: mode === 'light' ? '#FF161D' : '#FF161D',
+                params: mode === 'light' ? '#318BB1' : '#0983AD',
             },
             selection: {
                 border: mode === 'light' ? '#ccc' : '#555',
@@ -118,12 +124,12 @@ export function ThemeWrapper(p: { children?: React.ReactNode }) {
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{
                 ':root': {
-                    fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif',
+                    fontFamily: theme.typography.fontFamily,
                     lineHeight: 1.5,
                     fontWeight: 400,
-                    colorScheme: mode,
-                    color: mode === 'light' ? 'black' : 'white',
-                    backgroundColor: mode === 'light' ? 'white' : '#121212',
+                    colorScheme: theme.palette.mode,
+                    color: theme.palette.text.primary,
+                    backgroundColor: theme.palette.background.default,
                     fontSynthesis: 'none',
                     textRendering: 'optimizeLegibility',
                     WebkitFontSmoothing: 'antialiased',
