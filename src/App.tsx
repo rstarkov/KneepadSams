@@ -9,9 +9,27 @@ function App() {
             <SamSystemCard sam={sams.tor} />
             <SamSystemCard sam={sams.tunguska} />
             <SamSystemCard sam={sams.s300} />
+            <LegendCard />
         </div>
     )
 }
+
+function LegendCard(): React.ReactNode {
+    return <LegendDiv>
+        <RwrDiv>[CS] <span style={{ fontWeight: "normal" }}>RWR code</span></RwrDiv>
+        <HarmDiv>[103] <span style={{ fontWeight: "normal" }}>HARM code</span></HarmDiv>
+        <div>Priority unit listed first</div>
+    </LegendDiv>;
+}
+const LegendDiv = styled("div")`
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #1A73E8;
+    align-self: center;
+    margin: 0 auto;
+    padding: 0.7rem 1rem;
+    background: #f0f0f0;
+`;
 
 function SamSystemCard(p: { sam: SamSystem }): React.ReactNode {
     const mainUnit = p.sam.units[0];

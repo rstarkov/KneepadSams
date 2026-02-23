@@ -105,7 +105,7 @@ export const sams = {
             rwr: "10",
             harm: "110",
             type: "Track radar",
-            images: [{ src: img_s300_flaplid }],
+            images: [{ src: img_s300_flaplid, css: { width: "6.1rem" } }],
         }, {
             name: "Big Bird",
             rwr: "BB",
