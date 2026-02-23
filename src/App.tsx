@@ -1,5 +1,5 @@
 import React from 'react';
-import { rwrs, sams, type SamKey, type SamSystem, type SamUnitImage } from './data'
+import { rwrs, sams, type SamSystem, type SamUnitImage } from './data'
 import { styled } from '@mui/material'
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     }
 
     // Determine which SAMs to show based on selected SAMs and RWRs
-    const samsToShow = includeSam;
+    let samsToShow = includeSam.length > 0 ? includeSam : Object.keys(sams).filter(sk => sams[sk].units.some(u => u.rwr && includeRwr.includes(u.rwr)));
 
     return (
         <div style={{ padding: "1.5rem" }}>
@@ -30,7 +30,7 @@ function App() {
             </div>}
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 0", flexWrap: "wrap", marginTop: "1rem" }}>
                 {samsToShow.map(sk => <SamSystemCard key={sk} sam={sams[sk]} />)}
-                <LegendCard />
+                {samsToShow.length > 0 && <LegendCard />}
             </div>
         </div>
     )
