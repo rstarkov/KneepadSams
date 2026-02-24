@@ -1,7 +1,7 @@
 import { Menu, MenuItem, styled, useTheme } from '@mui/material';
 import React from 'react';
 import { rwrs, sams, type SamSystem, type SamUnitImage } from './data';
-import { TopRightButton } from './theme';
+import { TopRightButton, useThemeToggle } from './theme';
 
 function parseHash(): { rwr: string[], sam: string[], hideSams: boolean, hideSummary: boolean, hideLegend: boolean } {
     const hash = window.location.hash.slice(1); // remove #
@@ -18,6 +18,7 @@ function parseHash(): { rwr: string[], sam: string[], hideSams: boolean, hideSum
 
 export function App() {
     const theme = useTheme();
+    const toggleTheme = useThemeToggle();
     const initial = parseHash();
     const [includeRwr, setIncludeRwr] = React.useState<string[]>(initial.rwr);
     const [includeSam, setIncludeSam] = React.useState<string[]>(initial.sam);
@@ -62,7 +63,7 @@ export function App() {
                 <div>SAM:</div>
                 {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk) ? "yes" : samsToShow.includes(sk) ? "implicit" : "no"} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>
-            <TopRightButton onClick={(e) => setMenuAnchor(e.currentTarget)} style={{ right: "56px" }}>▼</TopRightButton>
+            <TopRightButton onClick={(e) => setMenuAnchor(e.currentTarget)}>▼</TopRightButton>
             <Menu
                 anchorEl={menuAnchor}
                 open={Boolean(menuAnchor)}
@@ -76,6 +77,9 @@ export function App() {
                 </MenuItem>
                 <MenuItem onClick={() => setHideLegend(!hideLegend)}>
                     {!hideLegend ? '✓ ' : '   '}Show Legend
+                </MenuItem>
+                <MenuItem onClick={toggleTheme}>
+                    {theme.palette.mode === 'light' ? '🌙' : '☀️'} {theme.palette.mode === 'light' ? 'Dark' : 'Light'} Mode
                 </MenuItem>
             </Menu>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 2rem", flexWrap: "wrap", marginTop: "1rem" }}>

@@ -1,6 +1,16 @@
 import { createTheme, GlobalStyles, styled, ThemeProvider, type PaletteMode } from '@mui/material';
 import React from 'react';
 
+const ThemeToggleContext = React.createContext<(() => void) | undefined>(undefined);
+
+export function useThemeToggle() {
+    const context = React.useContext(ThemeToggleContext);
+    if (!context) {
+        throw new Error('useThemeToggle must be used within ThemeWrapper');
+    }
+    return context;
+}
+
 declare module '@mui/material/styles' {
     interface Palette {
         sam: {
@@ -123,28 +133,27 @@ export function ThemeWrapper(p: { children?: React.ReactNode }) {
 
     return (
         <ThemeProvider theme={theme}>
-            <GlobalStyles styles={{
-                ':root': {
-                    fontFamily: theme.typography.fontFamily,
-                    lineHeight: 1.5,
-                    fontWeight: 400,
-                    colorScheme: theme.palette.mode,
-                    color: theme.palette.text.primary,
-                    backgroundColor: theme.palette.background.default,
-                    fontSynthesis: 'none',
-                    textRendering: 'optimizeLegibility',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                },
-                body: {
-                    margin: 0,
-                    minHeight: '100vh',
-                },
-            }} />
-            <TopRightButton onClick={toggleTheme}>
-                {mode === 'light' ? '🌙' : '☀️'}
-            </TopRightButton>
-            {p.children}
+            <ThemeToggleContext.Provider value={toggleTheme}>
+                <GlobalStyles styles={{
+                    ':root': {
+                        fontFamily: theme.typography.fontFamily,
+                        lineHeight: 1.5,
+                        fontWeight: 400,
+                        colorScheme: theme.palette.mode,
+                        color: theme.palette.text.primary,
+                        backgroundColor: theme.palette.background.default,
+                        fontSynthesis: 'none',
+                        textRendering: 'optimizeLegibility',
+                        WebkitFontSmoothing: 'antialiased',
+                        MozOsxFontSmoothing: 'grayscale',
+                    },
+                    body: {
+                        margin: 0,
+                        minHeight: '100vh',
+                    },
+                }} />
+                {p.children}
+            </ThemeToggleContext.Provider>
         </ThemeProvider>
     );
 }
