@@ -59,7 +59,7 @@ export function App() {
                 <div>RWR:</div>
                 {Object.keys(rwrs).map(rwr => <SelectDiv key={rwr} selected={includeRwr.includes(rwr) ? "yes" : possibleRwr.has(rwr) ? "implicit" : "no"} onClick={() => toggle(rwr, includeRwr, setIncludeRwr)}><RwrDiv>{rwr}</RwrDiv></SelectDiv>)}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem", fontSize: "0.9rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "3rem", fontSize: "0.9rem" }}>
                 <div>SAM:</div>
                 {Object.keys(sams).map(sk => <SelectDiv key={sk} selected={includeSam.includes(sk) ? "yes" : samsToShow.includes(sk) ? "implicit" : "no"} onClick={() => toggle(sk, includeSam, setIncludeSam)}>{sams[sk].nameShort}</SelectDiv>)}
             </div>
@@ -70,16 +70,16 @@ export function App() {
                 onClose={() => setMenuAnchor(null)}
             >
                 <MenuItem onClick={() => setHideSams(!hideSams)}>
-                    {!hideSams ? '✓ ' : '   '}Show SAMs
+                    <Checkbox checked={!hideSams} /> Show SAMs
                 </MenuItem>
                 <MenuItem onClick={() => setHideSummary(!hideSummary)}>
-                    {!hideSummary ? '✓ ' : '   '}Show Summary
+                    <Checkbox checked={!hideSummary} /> Show summary
                 </MenuItem>
                 <MenuItem onClick={() => setHideLegend(!hideLegend)}>
-                    {!hideLegend ? '✓ ' : '   '}Show Legend
+                    <Checkbox checked={!hideLegend} /> Show legend
                 </MenuItem>
                 <MenuItem onClick={toggleTheme}>
-                    {theme.palette.mode === 'light' ? '🌙' : '☀️'} {theme.palette.mode === 'light' ? 'Dark' : 'Light'} Mode
+                    <Checkbox checked={theme.palette.mode === 'dark'} /> Dark mode
                 </MenuItem>
             </Menu>
             <div style={{ display: "flex", flexDirection: "row", gap: "1rem 2rem", flexWrap: "wrap", marginTop: "1rem" }}>
@@ -252,4 +252,19 @@ const UnitName = styled("div")`
 const ParamsDiv = styled("div")`
     color: ${p => p.theme.palette.sam.params};
     text-align: right;
+`;
+
+const Checkbox = styled("div") <{ checked: boolean }>`
+    width: 16px;
+    height: 16px;
+    margin-right: 0.6rem;
+    border: 1px solid ${p => p.theme.palette.selection.border};
+    background-color: ${p => p.checked ? p.theme.palette.selection.backgroundActive : "transparent"};
+    :after {
+        content: '${p => p.checked ? "✓" : ""}';
+        display: block;
+        text-align: center;
+        line-height: 16px;
+        color: ${p => p.theme.palette.text.primary};
+    }
 `;
